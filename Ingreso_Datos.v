@@ -223,7 +223,7 @@ module Ingreso_Datos(
 					else 
 						contador_maquina_next = s3;
 					end
-				else if (~escribe)
+				else if (escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -313,7 +313,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s3;
 				else if (corre_izq)
 					contador_maquina_next = s1;
-				else if (~escribe)
+				else if (escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -479,7 +479,7 @@ module Ingreso_Datos(
 					end	
 				else if (corre_izq)
 					contador_maquina_next = s2;
-				else if (~escribe)
+				else if (escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -534,7 +534,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s5;
 				else if (corre_izq) 
 					contador_maquina_next = s3;
-				else if (~escribe)
+				else if (escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -581,7 +581,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s6;
 				else if (corre_izq) 
 					contador_maquina_next = s4;
-				else if (~escribe)
+				else if (escribe)
 					contador_maquina_next = s0;	
 				else begin 
 						contador_maquina_next = contador_maquina_next;
@@ -627,7 +627,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s1;
 				else if (corre_izq)  
 					contador_maquina_next = s5;
-				else if (~escribe)
+				else if (escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;

@@ -88,7 +88,7 @@ module Test_Top;
 		.T_hora(T_hora),
 		.alarma_ON(alarma_ON)
 	);
-assign Bus_Dato_Dir = (~RDO) ?  8'b00100011 : 8'bzzzzzzzz;
+//assign Bus_Dato_Dir = (~RDO) ?  8'b00100011 : 8'bzzzzzzzz;
 	initial begin
 		// Initialize Inputs
 		CLK = 0;
@@ -110,7 +110,7 @@ assign Bus_Dato_Dir = (~RDO) ?  8'b00100011 : 8'bzzzzzzzz;
 		Reset = 0;
 		#10;
 		inicializar = 1;
-		#1000;
+		#4000;
 		inicializar = 0;
 		#10;
 		doce_24 = 1;

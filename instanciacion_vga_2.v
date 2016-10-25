@@ -19,11 +19,13 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module instanciacion_vga_2(input wire CLK_TB, RESET_TB, activring_TB, bandera_TB_hh, bandera_TB_mh, bandera_TB_sh, bandera_TB_df,
-    input wire bandera_TB_mf, bandera_TB_af, bandera_TB_hc, bandera_TB_mc, bandera_TB_sc, 
+    input wire bandera_TB_mf, bandera_TB_af, bandera_TB_hc, bandera_TB_mc, bandera_TB_sc, formato_12,
 	 input wire [7:0] hora, min, seg, dia, mes, ano, c_hora, c_min, c_seg, 
 	 output wire v_sync, h_sync,
 	 output wire [6:0] text_on_out,
-	 output wire [2:0] text_rgb_out
+	 output wire [2:0] text_rgb_out,
+	 output wire [9:0] pix_X,
+	 output wire videon
 	 );
 	 
 	 wire videoon, vsync, hsync;
@@ -80,13 +82,14 @@ vga_interfaz instance_name2 (
     .pix_x(pixx), 
     .pix_y(pixy), 
     .text_on(text_on), 
-    .text_rgb(text_rgb)
+    .text_rgb(text_rgb),
+	 .formato_12(formato_12)
     );
 
 assign v_sync = vsync;
 assign h_sync = hsync;
 assign text_on_out = text_on;
 assign text_rgb_out = text_rgb;
-
-
+assign pix_X = pixx;
+assign videon = videoon;
 endmodule

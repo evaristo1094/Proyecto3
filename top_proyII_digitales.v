@@ -97,7 +97,8 @@ instanciacion_vga_2 instance_name2 (
     .v_sync(v_sync), 
     .h_sync(h_sync), 
     .text_on_out(text_on_out), 
-    .text_rgb_out(text_RGB_out)
+    .text_rgb_out(text_RGB_out),
+	 .formato_12(boton_doce_24)
     );
 
 assign Bus_Dato_Dire = Bus_Dato_Dir ; 

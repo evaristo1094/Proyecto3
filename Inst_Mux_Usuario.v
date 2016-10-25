@@ -28,13 +28,14 @@ inout wire [7:0] Bus_Dato_Dir
 wire [7:0] seg_C,min_C,hora_C,dia,mes,ano,segundo,minuto,hora,hora_TVGA,seg_TVGA,min_TVGA; 
 wire [7:0] Seg2,Min2,Hora2,Dia2,Mes2,Ano2,Seg2_T,Min2_T,Hora2_T,seg_T,min_T,hora_T;
 wire [3:0] hora_1,hora_2,min_1,min_2,seg_1,seg_2; 
-wire dism,aument,izqda,derec,sw_conf,sw_CT,DOCE_24,escrib;
 wire cursor_seg,cursor_min,cursor_hora,cursor_dia,cursor_mes,cursor_ano,
-cursor_T_seg,cursor_T_min,cursor_T_hora;     
+cursor_T_seg,cursor_T_min,cursor_T_hora,crono,configurate;     
 wire [7:0] seg_VGA,min_VGA,hora_VGA,dia_VGA,mes_VGA,ano_VGA,seg_T_VGA,min_T_VGA,hora_T_VGA;
 Mux_VGA instance_name1 (
-    .En_Escr(sw_conf), 
-    .En_clock(sw_CT), 
+	 .clk(CLK),
+	 .reset(btn_RESET),
+    .En_Escr(switch_configuracion), 
+    .En_clock(switch_Clk_timer), 
     .seg_usu(seg_C), 
     .min_usu(min_C), 
     .hora_usu(hora_C), 
@@ -61,19 +62,21 @@ Mux_VGA instance_name1 (
     .ano_VGA(ano_VGA), 
     .seg_T_VGA(seg_T_VGA), 
     .min_T_VGA(min_T_VGA), 
-    .hora_T_VGA(hora_T_VGA)
+    .hora_T_VGA(hora_T_VGA),
+	 .crono(crono),
+	 .configurate(configurate)
     );
 
 Ingreso_Datos instance_name2 (
     .clk(CLK), 
     .reset(btn_RESET), 
-    .C_T(sw_CT), 
-    .disminuye(dism), 
-    .aumenta(aument), 
-    .escribe(sw_conf), 
-    .corre_der(derec), 
-    .corre_izq(izqda), 
-    .doce_24(DOCE_24), 
+    .C_T(crono), 
+    .disminuye(btn_dism), 
+    .aumenta(btn_aum), 
+    .escribe(configurate), 
+    .corre_der(btn_der), 
+    .corre_izq(btn_izq), 
+    .doce_24(boton_doce_24), 
     .seg_C(seg_C), 
     .min_C(min_C), 
     .hora_C(hora_C), 
@@ -97,35 +100,13 @@ Ingreso_Datos instance_name2 (
 	 .min_TVGA(min_TVGA)
     );
 
-Elimina_Rebotes instance_name3 (
-    .btn_reset(btn_RESET), 
-    .clk(CLK), 
-	 .sw_inicializador(sw_inicializador),
-    .btn_disminuye(btn_dism), 
-    .btn_aumenta(btn_aum), 
-    .btn_derecha(btn_izq), 
-    .btn_izquierda(btn_der), 
-    .btn_escribir(sw_escribir), 
-    .switch_CT(switch_Clk_timer), 
-    .switch_config(switch_configuracion), 
-    .btn_doce_24(boton_doce_24), 
-    .dism(dism), 
-    .aument(aument), 
-    .derec(derec), 
-    .izqda(izqda), 
-    .escrib(escrib), 
-    .sw_CT(sw_CT), 
-    .sw_conf(sw_conf), 
-    .DOCE_24(DOCE_24),
-	 .inicializador(inicializador)
-    );
 Top_Instanciacion instance_name4 (
     .CLK(CLK), 
     .Reset(btn_RESET), 
-    .WR1(escrib), 
-    .CT(sw_CT), 
-    .doce_24(DOCE_24), 
-    .inicializar(inicializador), 
+    .WR1(sw_escribir), 
+    .CT(switch_Clk_timer), 
+    .doce_24(boton_doce_24), 
+    .inicializar(sw_inicializador), 
     .clk_seg1(seg_C), 
     .clk_min1(min_C), 
     .clk_hora1(hora_C), 
@@ -188,4 +169,5 @@ assign h_T_VGA = hora_T_VGA;
 assign segundo = {seg_1,seg_2};
 assign minuto = {min_1,min_2};
 assign hora = {hora_1,hora_2};
+
 endmodule

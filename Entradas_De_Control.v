@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Entradas_De_Control(input wire clk, reset,
+module Entradas_De_Control(input wire clk, reset, reset2,
 En_Esc,En_Lect,															//// Entradas para habilitar cuentas y salidas
 output wire CS, WR,RD,AD, DIR1, DAT1,DAT_LECT,cambio_est,cambio_est2,	///Salidas que controlaran los tiempo de manejo del RTC
 En_tristate	 );															/// Activacion del triestato para el envio de los datos
@@ -76,7 +76,7 @@ always @( posedge clk, posedge reset)	begin
 ///// Condicion para avanzar el contador que generara las senales de control///////////////	
 
 always @( posedge clk, posedge reset) begin
-		if (reset)
+		if (reset | reset2)
 			ctrl_count_next <= 0;
 		else if(En_Esc | En_Lect)
 			ctrl_count_next <= ctrl_count_next + 7'b1;

@@ -24,7 +24,8 @@ En_clk, Lectura, inicializa,					// senales de la maquina principal, la primera 
 input wire [7:0] D_Seg,D_Min,D_Hora, Dato_L,  						//entradas de direcciones de maquina principal y datos del RTC  
 output wire [7:0] Seg_LC,Min_LC,Hora_LC,Ano_LC, Mes_LC, Dia_LC,// salidas de los datos de lectura del clk
 Seg_LT,Min_LT,Hora_LT, 														 /// salidas de lectura del timer
-output wire  Term_Lect,E_Lect,Tr_Lect,clk_timerL, 					// senales de control para la maquina principal y la de control
+output wire  Term_Lect,E_Lect,Tr_Lect,clk_timerL, 
+output reg limpiar,					// senales de control para la maquina principal y la de control
 output wire[7:0] Dir_L  ); 													// direccion de lectura del timer
 
 localparam [3:0] 	s0 = 4'b0000, // Variables del control de la maquina de estados
@@ -105,7 +106,8 @@ always@*
 			Mes_next = Mes_reg;
 			Ano_next = Ano_reg;
 			clk1_timer2_next = clk1_timer2;
-     if(~inicializa)
+			limpiar = 0;
+     if(~inicializa )
 		begin	
 	  case (ctrl_maquina)
 			
@@ -120,10 +122,12 @@ always@*
                   ctrl_maquina_next = s1;
 						clk1_timer2_next = 0;
 						Dato_Dir_next = 8'b11111111;
+						limpiar = 0;
 						En_Lect_next = 1;end
                else begin
 						ctrl_maquina_next = s0; 
                   En_Lect_next = 0;
+						Term_Lect_reg = 0;
 						end end
 
 			//////////// Estado de escritura del comando de transferencia del clock o el timer a la RAM			
@@ -138,6 +142,9 @@ always@*
 							 ctrl_maquina_next = s2;
 							 Tr_Lect_next = 0;
 							  En_Lect_next = 0; end
+						else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end
 						else begin
 							 En_Lect_next =  1;
 							ctrl_maquina_next = ctrl_maquina_next;  end	end						
@@ -151,6 +158,9 @@ always@*
 								 Tr_Lect_next = 0;
 								 ctrl_maquina_next = s3;
 								  En_Lect_next = 0; end
+								else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end	  
 							else begin
 								 En_Lect_next =  1;
 								ctrl_maquina_next = ctrl_maquina_next;  end							
@@ -172,6 +182,9 @@ always@*
 					else if (cambio_estado2) begin	
 						 ctrl_maquina_next = s4;
 						  En_Lect_next = 0; end
+						else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end 
 					else begin
 						 En_Lect_next =  1;
                   ctrl_maquina_next = ctrl_maquina_next;  end
@@ -193,6 +206,9 @@ always@*
 					else if (cambio_estado2 ) begin	
 						 ctrl_maquina_next = s5;
 						  En_Lect_next = 0; end
+						else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end 
 					else begin
 						 En_Lect_next = 1;
                   ctrl_maquina_next = ctrl_maquina_next;  end	
@@ -214,6 +230,9 @@ always@*
 					else if (cambio_estado2 ) begin	 
 						 ctrl_maquina_next = s6;
 						  En_Lect_next = 0; end
+						else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end	  
 					else begin
 						 En_Lect_next =  1;
                   ctrl_maquina_next = ctrl_maquina_next;  end	
@@ -234,6 +253,9 @@ always@*
 						else begin
 							 En_Lect_next =  1;
 							ctrl_maquina_next = ctrl_maquina_next;  end	end
+					else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end
 					else begin	 
 							 ctrl_maquina_next = s7;
 							  En_Lect_next = 0;
@@ -256,7 +278,10 @@ always@*
 							 En_Lect_next =  1;
 							ctrl_maquina_next = ctrl_maquina_next;  end	
 							end 
-					else begin	 
+				else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end
+				else begin	 
 						 ctrl_maquina_next = s8;
 						  En_Lect_next = 0;
 						  end 
@@ -280,6 +305,9 @@ always@*
 							 En_Lect_next =  1;
 							ctrl_maquina_next = ctrl_maquina_next;  end	
 							end 
+						else if (~Lectura) begin
+							limpiar = 1;
+							 ctrl_maquina_next = s0;end
 					else begin	 
 						 ctrl_maquina_next = s0;
 						 clk1_timer2_next = 0;

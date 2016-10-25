@@ -34,14 +34,15 @@ Dir_hora,Dir_minuto,Dir_segundo				// direcciones para la escritura del clk y ti
 
 /// Variables del control de la maquina de estados///
 	 
-localparam [1:0] 	s0 = 2'b00, 
-						s1 = 2'b01,
-						s2 = 3'b10,
-						s3 = 2'b11;
+localparam [2:0] 	s0 = 3'b000, 
+						s1 = 3'b001,
+						s2 = 3'b010,
+						s3 = 3'b011,
+						s4 = 3'b100;
 
 /// contador del control de la maquina de estados///		
 
-reg [1:0] ctrl_maquina, ctrl_maquina_next;				
+reg [2:0] ctrl_maquina, ctrl_maquina_next;				
 
 /// creacion de registros para las variables de salida ///////
 		
@@ -148,8 +149,8 @@ always@*
 			
 			s2: begin
 		
-					E_Lect_next = 1;
-					if (~T_Lect && ~inicializa) begin
+					//E_Lect_next = 1;
+					if (~T_Lect && ~inicializa && ~Esc_Lee && T_Esc) begin
 						alarma_on = 0;
 						E_Lect_next = 1;
 						if (~clk_tim) begin
@@ -165,8 +166,9 @@ always@*
 							Dir_segundo = 8'b01000001;
 							end end
                else if (Esc_Lee)begin
-                   ctrl_maquina_next = s0;
+                   ctrl_maquina_next = s4;
 						 E_Lect_next = 0;
+						 E_Esc_next = 1;
 						end	
 					else begin
                    ctrl_maquina_next = s3;
@@ -177,9 +179,11 @@ always@*
 						
 				/// estado no usado	
 				
-					s3: begin ctrl_maquina_next = s0;
+					s3: begin 
+					ctrl_maquina_next = s0;
 						alarma_on = 0;
 			end
+					s4: ctrl_maquina_next = s1;
 			/// estado de default
 				default : ctrl_maquina_next = s0;	
 			endcase

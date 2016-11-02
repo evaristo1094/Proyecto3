@@ -112,7 +112,7 @@ font_rom instance_name (
 	always @*begin
 	char_addr_ampm = 7'h00;
 		case (pix_x[9:5])
-			5'h0f: char_addr_ampm = {hora1[3]+3'b100, 4'b0001-hora1[3]};//A o M
+			5'h0f: char_addr_ampm = {hora1[3]+3'b100, 4'b0001-hora1[3]};//A o P
 			5'h10: char_addr_ampm = 7'h4d; //M
 		endcase
 	end

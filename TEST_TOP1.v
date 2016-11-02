@@ -27,16 +27,9 @@ module TEST_TOP1;
 	// Inputs
 	reg clk;
 	reg reset;
-	reg derecha;
-	reg apagar_alarma;
-	reg izquierda;
-	reg aumenta;
-	reg disminuya;
-	reg configuracion;
-	reg sw_Clk_timer;
-	reg boton_doce_24;
-	reg sw_escribir;
-	reg sw_inicializador;
+	reg ps2c;
+	reg ps2d;
+	
 
 	// Outputs
 	wire [6:0] text_on_out;
@@ -55,16 +48,8 @@ module TEST_TOP1;
 	top_proyII_digitales uut (
 		.clk(clk), 
 		.reset(reset), 
-		.derecha(derecha), 
-		.apagar_alarma(apagar_alarma), 
-		.izquierda(izquierda), 
-		.aumenta(aumenta), 
-		.disminuya(disminuya), 
-		.configuracion(configuracion), 
-		.sw_Clk_timer(sw_Clk_timer), 
-		.boton_doce_24(boton_doce_24), 
-		.sw_escribir(sw_escribir), 
-		.sw_inicializador(sw_inicializador), 
+		.ps2c(ps2c),
+		.ps2d(ps2d),
 		.text_on_out(text_on_out), 
 		.text_RGB_out(text_RGB_out), 
 		.h_sync(h_sync), 
@@ -80,36 +65,345 @@ module TEST_TOP1;
 		// Initialize Inputs
 		clk = 0;
 		reset = 0;
-		derecha = 0;
-		apagar_alarma = 0;
-		izquierda = 0;
-		aumenta = 0;
-		disminuya = 0;
-		configuracion = 0;
-		sw_Clk_timer = 0;
-		boton_doce_24 = 0;
-		sw_escribir = 0;
-		sw_inicializador = 0;
-
-		// Wait 100 ns for global reset to finish
-		#20;
+		#100
+		
 		reset = 1;
-      #20;
+		#100
+		
 		reset = 0;
-		#2000;
-		sw_inicializador = 1;
-		#10
-		sw_inicializador = 0;
-		#6050;
-		sw_Clk_timer = 1;
-		sw_escribir = 1;
-		#10;
-		sw_Clk_timer = 1;
-		sw_escribir = 0;
-		#10;
-		sw_escribir = 0;
-		// Add stimulus here
+		#100
 
+		ps2d = 0;
+		ps2c = 0;
+			
+		// Wait 100 ns for global reset to finish
+	
+		// Add stimulus here
+		
+		//F0
+		#505
+		ps2c = 1;
+		ps2d = 0;//Bit de inicio
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 0 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 1 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 2 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 3 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 4 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 5 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 6 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 7 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit paridad (par=1)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit parada
+		
+		#500
+		ps2c = 0;
+
+		//0C
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit de inicio
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 0 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 1 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 2 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 3 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 4 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 5 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 6 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 7 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit paridad (par=1)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit parada
+		
+		#500
+		ps2c = 0;
+		#500
+		ps2c = 1;
+		#500
+		ps2c = 0;
+		#500
+		
+		
+		//F0
+		#505
+		ps2c = 1;
+		ps2d = 0;//Bit de inicio
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 0 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 1 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 2 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 3 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 4 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 5 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 6 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 7 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit paridad (par=1)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit parada
+		
+		#500
+		ps2c = 0;
+
+		//04
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit de inicio
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 0 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 1 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit 2 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 3 (1C)
+		
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 4 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 5 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 6 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 0;//Bit 7 (1C)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit paridad (par=1)
+
+		#500
+		ps2c = 0;
+		
+		#500
+		ps2c = 1;
+		ps2d = 1;//Bit parada
+		
+		#500
+		ps2c = 0;
+		#500
+		ps2c = 1;
+		#500
+		ps2c = 0;
+		#500
+		
+		#2000$stop;		
 	end
      always  begin
 			#5	clk = ~clk;

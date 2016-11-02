@@ -32,10 +32,11 @@ output wire [7:0] dato
 
 
 localparam BRK = 8'hF0;    //  breakcode // Declaracion de constantes
-localparam wait_brk = 1'b0;  // declaracion simbolica de estados 
-localparam get_code = 1'b1;  
+localparam wait_brk = 2'b00;  // declaracion simbolica de estados 
+localparam get_code = 2'b01;  
+localparam espera = 2'b10; 
 
-reg state_next, state_reg;       // declaracion de señales 
+reg [1:0]state_next, state_reg;       // declaracion de señales 
 reg [7:0]dato_next, dato_reg;
 
 always @(posedge clk, posedge reset)   // Maquina de estados y registro dtos
@@ -53,27 +54,28 @@ begin
 	state_next = state_reg;
 	dato_next = 8'b0;
 	case (state_reg)
-		wait_brk:       // Espera F0 de break code
+		wait_brk:       // Espera F0 que indica que el siguiente dato es el que hay que leer
 			if (scan_done_tick == 1'b1 && scan_out == BRK) 
 				state_next = get_code;
 			else 	state_next = wait_brk;
-		get_code:  //  código siguiente
-			if (scan_done_tick) 
+		
+		get_code:  //  Estado donde se lee el dato buscado
+			if (scan_done_tick)  // si el dato esta completo
 				begin
-					got_code_tick =1'b1;
-					dato_next = scan_out;
+					got_code_tick = 1'b1;		
+					dato_next = scan_out;		//se obtiene el dato del teclado
 					state_next = get_code;
 				end
-			else if (port_id == 8'h0a  && read_strobe == 1'b1)
-				state_next = wait_brk;	
+			else if (port_id == 8'h0a  && read_strobe == 1'b1)   // Condicion para retener este dato hasta que el pico lo haya leido
+				state_next = espera;
 			else begin
-			state_next = state_reg;
-			dato_next = dato_reg;
+				state_next = state_reg;
+				dato_next = dato_reg;
 			end
-			
-			
-	
-	
+		espera:begin
+			state_next = get_code;	
+			dato_next = 8'b0; end
+		default: state_next = wait_brk;
 	endcase
 end
 	assign dato = dato_reg;

@@ -155,7 +155,6 @@ module Ingreso_Datos(
 			s1: begin
 				if(aumenta) begin
 					if (C_T) begin
-				//	seg_C_D_next = seg_C_D_reg;	
 						if  ((seg_C_D_next == 4'b0101 && seg_C_U_next == 4'b1001) | seg_C_D_next == 4'b1100 )begin
 						 seg_C_D_next = 0;
 						 seg_C_U_next = 0;
@@ -170,7 +169,6 @@ module Ingreso_Datos(
 					   end
 						
 					else begin 
-					//seg_T_D_next = seg_T_D_reg;
 						if  ((seg_T_D_next == 4'b0101 && seg_T_U_next == 4'b1001) || seg_T_D_next == 4'b1000)begin
 						 seg_T_D_next = 0;
 						 seg_T_U_next = 0;
@@ -223,7 +221,7 @@ module Ingreso_Datos(
 					else 
 						contador_maquina_next = s3;
 					end
-				else if (escribe)
+				else if (~escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -313,7 +311,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s3;
 				else if (corre_izq)
 					contador_maquina_next = s1;
-				else if (escribe)
+				else if (~escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -479,7 +477,7 @@ module Ingreso_Datos(
 					end	
 				else if (corre_izq)
 					contador_maquina_next = s2;
-				else if (escribe)
+				else if (~escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -534,7 +532,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s5;
 				else if (corre_izq) 
 					contador_maquina_next = s3;
-				else if (escribe)
+				else if (~escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;
@@ -581,7 +579,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s6;
 				else if (corre_izq) 
 					contador_maquina_next = s4;
-				else if (escribe)
+				else if (~escribe)
 					contador_maquina_next = s0;	
 				else begin 
 						contador_maquina_next = contador_maquina_next;
@@ -627,7 +625,7 @@ module Ingreso_Datos(
 					contador_maquina_next = s1;
 				else if (corre_izq)  
 					contador_maquina_next = s5;
-				else if (escribe)
+				else if (~escribe)
 					contador_maquina_next = s0;	
 				else begin 
 					contador_maquina_next = contador_maquina_next;

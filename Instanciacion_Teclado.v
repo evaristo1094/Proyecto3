@@ -23,7 +23,6 @@ output wire f1, f2, f3, f4,f5,f12,up,down,left,right,output wire [7:0]dato
     );
 wire rx_done_tick, write, configurate, inicializate, arriba, abajo, izquierda, derecha, off_alarma, T24_12, clock_timer;
 wire[7:0] dout;
- 
 Receptor_PS2 instance_name (
     .clk(clk), 
     .reset(reset), 
@@ -60,6 +59,7 @@ Deco_Teclado instance_name3 (
     .T24_12(T24_12), 
     .clock_timer(clock_timer)
     );
+
 assign f1 = configurate;
 assign f2 = clock_timer;
 assign f3 = T24_12;

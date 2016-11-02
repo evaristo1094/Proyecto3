@@ -19,9 +19,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Inst_Mux_Usuario( input wire btn_dism, btn_aum, btn_der, btn_izq,btn_RESET,CLK,switch_configuracion,apagar_alarma,
-switch_Clk_timer,boton_doce_24,sw_escribir,sw_inicializador,output wire curs_seg,curs_min,curs_hora,curs_dia,curs_mes,curs_ano,
+switch_Clk_timer,boton_doce_24,sw_escribir,sw_inicializador, input wire [7:0] dato_teclado,
+output wire curs_seg,curs_min,curs_hora,curs_dia,curs_mes,curs_ano,rd_strobe,wr_strobe,
 curs_T_seg,curs_T_min,curs_T_hora, WRO,RDO,CSO,ADO,activring,
-output wire [7:0] s_VGA, mi_VGA,h_VGA, d_VGA, me_VGA,an_VGA,s_T_VGA,m_T_VGA,h_T_VGA,
+output wire [7:0] s_VGA, mi_VGA,h_VGA, d_VGA, me_VGA,an_VGA,s_T_VGA,m_T_VGA,h_T_VGA,puerto_id,out_puerto,
 inout wire [7:0] Bus_Dato_Dir
     );
 	 
@@ -31,9 +32,10 @@ wire [3:0] hora_1,hora_2,min_1,min_2,seg_1,seg_2;
 wire cursor_seg,cursor_min,cursor_hora,cursor_dia,cursor_mes,cursor_ano,
 cursor_T_seg,cursor_T_min,cursor_T_hora,crono,configurate;     
 wire [7:0] seg_VGA,min_VGA,hora_VGA,dia_VGA,mes_VGA,ano_VGA,seg_T_VGA,min_T_VGA,hora_T_VGA;
+wire [7:0] seg_VGAY,min_VGAY,hora_VGAY,dia_VGAY,mes_VGAY,ano_VGAY,seg_T_VGAY,min_T_VGAY,hora_T_VGAY;
+wire read_strobe,write_strobe;
+wire [7:0] port_id,out_port,pico_in_port;
 Mux_VGA instance_name1 (
-	 .clk(CLK),
-	 .reset(btn_RESET),
     .En_Escr(switch_configuracion), 
     .En_clock(switch_Clk_timer), 
     .seg_usu(seg_C), 
@@ -45,35 +47,33 @@ Mux_VGA instance_name1 (
     .seg_T_usu(seg_TVGA), 
     .min_T_usu(min_TVGA), 
     .hora_T_usu(hora_TVGA), 
-    .seg_RTC(Seg2), 
-    .min_RTC(Min2), 
-    .hora_RTC(Hora2), 
-    .dia_RTC(Dia2), 
-    .mes_RTC(Mes2), 
-    .ano_RTC(Ano2), 
-    .seg_T_RTC(segundo), 
-    .min_T_RTC(minuto), 
-    .hora_T_RTC(hora), 
-    .seg_VGA(seg_VGA), 
-    .min_VGA(min_VGA), 
-    .hora_VGA(hora_VGA), 
-    .dia_VGA(dia_VGA), 
-    .mes_VGA(mes_VGA), 
-    .ano_VGA(ano_VGA), 
-    .seg_T_VGA(seg_T_VGA), 
-    .min_T_VGA(min_T_VGA), 
-    .hora_T_VGA(hora_T_VGA),
-	 .crono(crono),
-	 .configurate(configurate)
+    .seg_RTC(seg_VGA), 
+    .min_RTC(min_VGA), 
+    .hora_RTC(hora_VGA), 
+    .dia_RTC(dia_VGA), 
+    .mes_RTC(mes_VGA), 
+    .ano_RTC(ano_VGA), 
+    .seg_T_RTC(seg_T_VGA), 
+    .min_T_RTC(min_T_VGA), 
+    .hora_T_RTC(hora_T_VGA), 
+    .seg_VGAY(seg_VGAY), 
+    .min_VGAY(min_VGAY), 
+    .hora_VGAY(hora_VGAY), 
+    .dia_VGAY(dia_VGAY), 
+    .mes_VGAY(mes_VGAY), 
+    .ano_VGAY(ano_VGAY), 
+    .seg_T_VGAY(seg_T_VGAY), 
+    .min_T_VGAY(min_T_VGAY), 
+    .hora_T_VGAY(hora_T_VGAY)
     );
 
 Ingreso_Datos instance_name2 (
     .clk(CLK), 
     .reset(btn_RESET), 
-    .C_T(crono), 
+    .C_T(switch_Clk_timer), 
     .disminuye(btn_dism), 
     .aumenta(btn_aum), 
-    .escribe(configurate), 
+    .escribe(switch_configuracion), 
     .corre_der(btn_der), 
     .corre_izq(btn_izq), 
     .doce_24(boton_doce_24), 
@@ -148,6 +148,51 @@ indicador_ring instance_name5 (
 	 .reset(btn_RESET),
 	 .apagar_alarma(apagar_alarma)
     );
+	 
+deco instance_name6 (
+    .clk(CLK), 
+    .reset(btn_RESET), 
+    .dato_pico(out_port), 
+    .port_id(port_id), 
+    .write_St(write_strobe), 
+    .seg_VGA(seg_VGA), 
+    .min_VGA(min_VGA), 
+    .hora_VGA(hora_VGA), 
+    .dia_VGA(dia_VGA), 
+    .mes_VGA(mes_VGA), 
+    .ano_VGA(ano_VGA), 
+    .seg_T_VGA(seg_T_VGA), 
+    .min_T_VGA(min_T_VGA), 
+    .hora_T_VGA(hora_T_VGA)
+    );	 
+	
+mux_picoblaze instance_name7 (
+    .read_strobe(read_strobe), 
+    .port_id(port_id), 
+    .tecla(dato_teclado), 
+    .dia(Dia2), 
+    .mes(Mes2), 
+    .ano(Ano2), 
+    .hora(Hora2), 
+    .min(Min2), 
+    .seg(Seg2), 
+    .chora(hora), 
+    .cmin(minuto), 
+    .cseg(segundo), 
+    .pico_in_port(pico_in_port)
+    );
+	 
+pico_top instance_name8 (
+    .clk(CLK), 
+    .cpu_reset(btn_RESET), 
+    .in_port(pico_in_port), 
+    .write_strobe(write_strobe), 
+    .read_strobe(read_strobe), 
+    .k_write_strobe(), 
+    .interrupt_ack(), 
+    .port_id(port_id), 
+    .out_port(out_port)
+    );	
 assign curs_seg = cursor_seg; 
 assign curs_min = cursor_min;
 assign curs_hora = cursor_hora; 
@@ -157,17 +202,20 @@ assign curs_ano = cursor_ano;
 assign curs_T_seg = cursor_T_seg; 
 assign curs_T_min = cursor_T_min; 
 assign curs_T_hora = cursor_T_hora;
-assign s_VGA = seg_VGA;
-assign mi_VGA = min_VGA;
-assign h_VGA = hora_VGA;
-assign d_VGA = dia_VGA;
-assign me_VGA = mes_VGA;
-assign an_VGA = ano_VGA;
-assign s_T_VGA = seg_T_VGA;
-assign m_T_VGA = min_T_VGA;
-assign h_T_VGA = hora_T_VGA;
+assign s_VGA = seg_VGAY;
+assign mi_VGA = min_VGAY;
+assign h_VGA = hora_VGAY;
+assign d_VGA = dia_VGAY;
+assign me_VGA = mes_VGAY;
+assign an_VGA = ano_VGAY;
+assign s_T_VGA = seg_T_VGAY;
+assign m_T_VGA = min_T_VGAY;
+assign h_T_VGA = hora_T_VGAY;
 assign segundo = {seg_1,seg_2};
 assign minuto = {min_1,min_2};
 assign hora = {hora_1,hora_2};
-
+assign wr_strobe = write_strobe;
+assign rd_strobe = read_strobe;
+assign out_puerto = out_port;
+assign puerto_id = port_id;
 endmodule

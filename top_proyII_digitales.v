@@ -18,12 +18,11 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module top_proyII_digitales(input wire clk, reset,  derecha,  izquierda, aumenta, disminuya, configuracion, sw_Clk_timer, boton_doce_24,
-sw_escribir, sw_inicializador,  apagar_alarma,
+module top_proyII_digitales(input wire clk, reset,  ps2d,ps2c,
 output wire [6:0] text_on_out,
 output wire [2:0] text_RGB_out,
 output wire h_sync, v_sync,
-output wire CSO,WRO,RDO,ADO,
+output wire CSO,WRO,RDO,ADO,wr,
 inout wire [7:0]Bus_Dato_Dire
     );
 	 
@@ -31,19 +30,44 @@ wire curs_seg, curs_min, curs_hora, curs_dia, curs_mes, curs_ano, curs_T_seg, cu
 wire [7:0] s_VGA, mi_VGA, h_VGA, d_VGA, me_VGA, an_VGA, s_T_VGA, m_T_VGA, h_T_VGA;
 wire [7:0] Bus_Dato_Dir;
 wire activring;
+wire f1,f2,f3,f4,f5,f12,up,down,left,right,rd_strobe,wr_strobe;
+wire [7:0] dato,puerto_id,out_puerto;
 // Instantiate the module
-Inst_Mux_Usuario instance_name (
-    .btn_dism(disminuya), 
-    .btn_aum(aumenta), 
-    .btn_der(derecha), 
-    .btn_izq(izquierda), 
+
+Instanciacion_Teclado instance_name5 (
+    .clk(clk), 
+    .reset(reset), 
+    .read_strobe(rd_strobe), 	//pico
+    .wrt_strobe(wr_strobe), 		//pico
+    .ps2d(ps2d), 						
+    .ps2c(ps2c), 
+    .port_id(puerto_id), 				//pico
+    .tecla(out_puerto), 					//pico
+    .f1(f1), 
+    .f2(f2), 
+    .f3(f3), 
+    .f4(f4), 
+    .f5(f5), 
+    .f12(f12), 
+    .up(up), 
+    .down(down), 
+    .left(left), 
+    .right(right), 
+    .dato(dato)						//pico
+    );
+	 
+Inst_Mux_Usuario instance_name4 (
+    .btn_dism(down), 
+    .btn_aum(up), 
+    .btn_der(right), 
+    .btn_izq(left), 
     .btn_RESET(reset), 
     .CLK(clk), 
-	 .sw_inicializador(sw_inicializador),
-    .switch_configuracion(configuracion), 
-    .switch_Clk_timer(sw_Clk_timer), 
-    .boton_doce_24(boton_doce_24), 
-    .sw_escribir(sw_escribir), 
+	 .sw_inicializador(f12),
+    .switch_configuracion(f1), 
+    .switch_Clk_timer(f2), 
+    .boton_doce_24(f3), 
+    .sw_escribir(f4), 
     .curs_seg(curs_seg), 
     .curs_min(curs_min), 
     .curs_hora(curs_hora), 
@@ -68,7 +92,12 @@ Inst_Mux_Usuario instance_name (
     .ADO(ADO),
 	 .Bus_Dato_Dir(Bus_Dato_Dir),
 	 .activring(activring),
-	 .apagar_alarma(apagar_alarma)
+	 .apagar_alarma(f5),
+	 .dato_teclado(dato),
+	 .puerto_id(puerto_id),
+	 .out_puerto(out_puerto),
+	 .wr_strobe(wr_strobe),
+	 .rd_strobe(rd_strobe)
     );
 
 // Instantiate the module
@@ -98,7 +127,9 @@ instanciacion_vga_2 instance_name2 (
     .h_sync(h_sync), 
     .text_on_out(text_on_out), 
     .text_rgb_out(text_RGB_out),
-	 .formato_12(boton_doce_24)
+	 .formato_12(f3),
+	 .pix_X(),
+	 .videon()
     );
 
 assign Bus_Dato_Dire = Bus_Dato_Dir ; 

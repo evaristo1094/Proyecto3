@@ -36,9 +36,9 @@ localparam f_arriba = 8'h75;    //  flecha arriba
 localparam f_abajo = 8'h72;    //  flecha abajo
 localparam f_izq = 8'h6b;		//flecha izquierda
 localparam f_der = 8'h74;		// flecha derecha
-localparam wait_WRSTB = 2'b0;  // declaracion simbolica de estados 
-localparam deco = 2'b01; 
-localparam espera = 2'b10;  
+localparam wait_WRSTB = 2'b00;  // declaracion simbolica de estados 
+localparam espera = 2'b01; 
+localparam espera2 = 2'b10;  
 localparam Teclado = 8'h0a;
 reg [1:0]state_next, state_reg;       // declaracion de señales 	
 reg T24_12_reg,T24_12_next,clock_timer_reg,clock_timer_next;
@@ -70,7 +70,7 @@ begin
 	write_next = write_reg;
 	configurate_next = configurate_reg;
 	inicializate_next = inicializate_reg;
-	off_alarma_next = off_alarma_reg ;	
+	off_alarma_next = 0 ;	
 	arriba = 1'b0;
 	abajo = 1'b0;
 	izquierda = 1'b0;
@@ -78,42 +78,43 @@ begin
 case (state_reg)
 		wait_WRSTB:   
 			if (port_ID == Teclado) 
-				state_next = deco;
-			else 	state_next = wait_WRSTB;
-		deco:	
-			if (wrt_strobe == 1'b1 && tecla == F1) begin
-				configurate_next  = ~configurate_reg;
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == F2) begin
-				clock_timer_next = ~clock_timer_reg;
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == F3)begin
-				T24_12_next = ~T24_12_reg;
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == F4) begin
-				write_next  = ~write_reg;
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == F5) begin
-				off_alarma_next  = ~off_alarma_reg;	
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == F12) begin
-				inicializate_next  = ~inicializate_reg;
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == f_arriba)begin
-				arriba = 1'b1;	
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == f_abajo)begin
-				abajo = 1'b1;
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == f_der)begin
-				derecha = 1'b1;
-				state_next = espera;end
-			else if (wrt_strobe == 1'b1 && tecla == f_izq)begin
-				izquierda = 1'b1;
-				state_next = espera;end
+				begin
+				if (wrt_strobe == 1'b1 && tecla == F1) begin
+					configurate_next  = ~configurate_reg;
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == F2) begin
+					clock_timer_next = ~clock_timer_reg;
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == F3)begin
+					T24_12_next = ~T24_12_reg;
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == F4) begin
+					write_next  = ~write_reg;
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == F5) begin
+					off_alarma_next  = 1;	
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == F12) begin
+					inicializate_next  = ~inicializate_reg;
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == f_arriba)begin
+					arriba = 1'b1;	
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == f_abajo)begin
+					abajo = 1'b1;
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == f_der)begin
+					derecha = 1'b1;
+					state_next = espera;end
+				else if (wrt_strobe == 1'b1 && tecla == f_izq)begin
+					izquierda = 1'b1;
+					state_next = espera;end
+				else 
+					state_next = espera; end
 			else 
-				state_next = deco;
-			espera: state_next = wait_WRSTB;	
+				state_next = espera;	
+			espera: state_next = espera2;	
+			espera2: state_next = wait_WRSTB;	
 			default:  state_next = wait_WRSTB;	
 
 	endcase			

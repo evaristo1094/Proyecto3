@@ -21,7 +21,7 @@
 module top_proyII_digitales(input wire clk, reset,  ps2d,ps2c,
 output wire [6:0] text_on_out,
 output wire [2:0] text_RGB_out,
-output wire h_sync, v_sync,
+output wire h_sync, v_sync,sonido,
 output wire CSO,WRO,RDO,ADO,wr,
 inout wire [7:0]Bus_Dato_Dire
     );
@@ -51,8 +51,8 @@ Instanciacion_Teclado instance_name5 (
     .f12(f12), 
     .up(up), 
     .down(down), 
-    .left(left), 
-    .right(right), 
+    .left(right), 
+    .right(left), 
     .dato(dato)						//pico
     );
 	 
@@ -97,7 +97,8 @@ Inst_Mux_Usuario instance_name4 (
 	 .puerto_id(puerto_id),
 	 .out_puerto(out_puerto),
 	 .wr_strobe(wr_strobe),
-	 .rd_strobe(rd_strobe)
+	 .rd_strobe(rd_strobe),
+	 .sonido(sonido)
     );
 
 // Instantiate the module

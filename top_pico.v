@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module pico_top( input wire clk, input cpu_reset, input wire [7:0] in_port,
-	output wire  k_write_strobe, interrupt_ack,output wire write_strobe, read_strobe,output wire [7:0]port_id, out_port
+	output wire write_strobe, read_strobe, k_write_strobe, interrupt_ack,output wire [7:0]port_id, out_port
     );
 
 wire	[11:0]	address;
@@ -27,8 +27,12 @@ wire	[17:0]	instruction;
 wire			bram_enable;
 //wire	[7:0]		port_id;
 //wire	[7:0]		out_port;
+//in_port
 //wire			write_strobe;
+//wire			k_write_strobe;
 //wire			read_strobe;
+//wire			interrupt;            //See note above
+//wire			interrupt_ack;
 wire			kcpsm6_sleep;         //See note above
 wire			kcpsm6_reset;   
 	//
@@ -36,28 +40,8 @@ wire			kcpsm6_reset;
 //wire wr_strb, rd_strb;
 //wire [11:0] addressI;
 //wire [17:0] instructionI;
-/*reg wr_reg,wr_next,rd_reg,rd_next;
-reg [7:0] id_next,id_reg,out_reg,out_next;
-always @(posedge clk, posedge cpu_reset)   // Maquina de estados y registro dtos
-	if (cpu_reset)begin
-		wr_reg <= 0;
-		rd_reg <= 0;
-		id_reg <= 0;	
-		out_reg <= 0;
-		
-		end
-	else begin
-		wr_reg <= wr_next;
-		rd_reg <= rd_next;
-		id_reg <= id_next;	
-		out_reg <= out_next;		end
+
 // Instanciar el KCPSM6
-always@* begin
-wr_next = write_strobe;
-rd_next = read_strobe;
-id_next = port_id;
-out_next = out_port;
-end*/
   kcpsm6 #(
 	.interrupt_vector	(12'h3FF),
 	.scratch_pad_memory_size(64),
@@ -96,8 +80,5 @@ assign interrupt = 1'b0;
 	.clk 			(clk));
 
 assign kcpsm6_reset = cpu_reset | rdl;
-/*assign write_strobeS = wr_reg;
-assign read_strobeS = rd_reg; 
-assign port_idS = id_reg;
-assign out_portS = out_reg;*/
+
 endmodule 

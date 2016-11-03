@@ -194,7 +194,7 @@ always@*
 							if (DIR) 
 								Dato_Dir_next = 8'b00100100;
 							else if (DAT)
-								Dato_Dir_next = 8'b00000001;
+								Dato_Dir_next = 8'b00000000;
 							else if (cambio_estado ) begin
 								 En_Esc_next =  0;
 								 ctrl_inic_next = i10;
@@ -206,7 +206,7 @@ always@*
 							if (DIR) 
 								Dato_Dir_next = 8'b00100101;
 							else if (DAT)
-								Dato_Dir_next = 8'b00000001;
+								Dato_Dir_next = 8'b00000000;
 							else if (cambio_estado ) begin
 								 En_Esc_next =  0;
 								 ctrl_inic_next = i11;

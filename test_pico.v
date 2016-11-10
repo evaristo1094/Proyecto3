@@ -30,10 +30,11 @@ module test_pico;
 	reg [7:0] in_port;
 
 	// Outputs
-	wire write_strobe;
-	wire read_strobe;
-	wire [7:0]out_port;
-	wire [7:0]port_id;
+	wire write_strobeS;
+	wire read_strobeS;
+	wire [7:0]out_portS;
+	wire [7:0]port_idS;
+	wire [17:0]instruccion;
 	wire k_write_strobe;
 	wire interrupt_ack;
 
@@ -42,12 +43,13 @@ module test_pico;
 		.clk(clk), 
 		.cpu_reset(cpu_reset), 
 		.in_port(in_port), 
-		.write_strobe(write_strobe), 
-		.read_strobe(read_strobe), 
-		.out_port(out_port), 
-		.port_id(port_id), 
+		.write_strobeS(write_strobeS), 
+		.read_strobeS(read_strobeS), 
+		.out_portS(out_portS), 
+		.port_idS(port_idS), 
 		.k_write_strobe(k_write_strobe), 
-		.interrupt_ack(interrupt_ack)
+		.interrupt_ack(interrupt_ack),
+		.instruccion(instruccion)
 	);
 
 	initial begin

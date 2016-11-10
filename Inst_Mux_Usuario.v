@@ -21,7 +21,7 @@
 module Inst_Mux_Usuario( input wire btn_dism, btn_aum, btn_der, btn_izq,btn_RESET,CLK,switch_configuracion,apagar_alarma,
 switch_Clk_timer,boton_doce_24,sw_escribir,sw_inicializador, input wire [7:0] dato_teclado,
 output wire curs_seg,curs_min,curs_hora,curs_dia,curs_mes,curs_ano,rd_strobe,wr_strobe,
-curs_T_seg,curs_T_min,curs_T_hora, WRO,RDO,CSO,ADO,activring,
+curs_T_seg,curs_T_min,curs_T_hora, WRO,RDO,CSO,ADO,activring,output reg sonido,
 output wire [7:0] s_VGA, mi_VGA,h_VGA, d_VGA, me_VGA,an_VGA,s_T_VGA,m_T_VGA,h_T_VGA,puerto_id,out_puerto,
 inout wire [7:0] Bus_Dato_Dir
     );
@@ -29,7 +29,7 @@ inout wire [7:0] Bus_Dato_Dir
 wire [7:0] seg_C,min_C,hora_C,dia,mes,ano,segundo,minuto,hora,hora_TVGA,seg_TVGA,min_TVGA; 
 wire [7:0] Seg2,Min2,Hora2,Dia2,Mes2,Ano2,Seg2_T,Min2_T,Hora2_T,seg_T,min_T,hora_T;
 wire [3:0] hora_1,hora_2,min_1,min_2,seg_1,seg_2; 
-wire cursor_seg,cursor_min,cursor_hora,cursor_dia,cursor_mes,cursor_ano,
+wire cursor_seg,cursor_min,cursor_hora,cursor_dia,cursor_mes,cursor_ano,dta,
 cursor_T_seg,cursor_T_min,cursor_T_hora,crono,configurate;     
 wire [7:0] seg_VGA,min_VGA,hora_VGA,dia_VGA,mes_VGA,ano_VGA,seg_T_VGA,min_T_VGA,hora_T_VGA;
 wire [7:0] seg_VGAY,min_VGAY,hora_VGAY,dia_VGAY,mes_VGAY,ano_VGAY,seg_T_VGAY,min_T_VGAY,hora_T_VGAY;
@@ -193,6 +193,17 @@ pico_top instance_name8 (
     .port_id(port_id), 
     .out_port(out_port)
     );	
+Contador_17bits instance_name9 (
+    .clk(CLK), 
+    .dta(dta)
+    );
+always@* begin
+	if(activring)
+		sonido = dta;
+	else 
+		sonido = 0;
+	end	
+		
 assign curs_seg = cursor_seg; 
 assign curs_min = cursor_min;
 assign curs_hora = cursor_hora; 
@@ -218,4 +229,5 @@ assign wr_strobe = write_strobe;
 assign rd_strobe = read_strobe;
 assign out_puerto = out_port;
 assign puerto_id = port_id;
+//assign sonido = dta;
 endmodule

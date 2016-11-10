@@ -341,7 +341,12 @@ module Ingreso_Datos(
 	//**********************12*******************************************			
 						if (doce_24) begin
 							if (C_T) begin
-								if  (hora_C_D_next [2:0] >= 3'b001 && hora_C_U_next >= 4'b0010 )begin
+								if  ( PM == 1 && hora_C_D_next [2:0] >= 3'b001 && hora_C_U_next >= 4'b0001 )begin
+									 PM_next = ~PM;
+									 hora_C_D_next = {PM_next,3'b000};
+									 hora_C_U_next = 4'b0000;
+								 end
+								 else if  (PM == 0 && hora_C_D_next [2:0] >= 3'b001 && hora_C_U_next >= 4'b0010 )begin
 									 PM_next = ~PM;
 									 hora_C_D_next = {PM_next,3'b000};
 									 hora_C_U_next = 4'b0001;
@@ -407,10 +412,15 @@ module Ingreso_Datos(
 						if (doce_24) begin
 							if (C_T) begin
 								
-								if  (hora_C_D_next [2:0] == 3'b000 &&( hora_C_U_next == 4'b0001 | hora_C_U_next == 4'b0000) )begin
-								 PM_next = ~PM;
-								 hora_C_D_next = {PM_next,3'b001};
-								 hora_C_U_next = 4'b0010;
+								if  (PM == 0 && hora_C_D_next [2:0] == 3'b000 &&( hora_C_U_next == 4'b0000 | hora_C_U_next == 4'b0000) )begin
+									 PM_next = ~PM;
+									 hora_C_D_next = {PM_next,3'b001};
+									 hora_C_U_next = 4'b0001;
+								 end
+								 else if  (PM == 1 && hora_C_D_next [2:0] == 3'b000 &&( hora_C_U_next == 4'b0001 | hora_C_U_next == 4'b0000) )begin
+									 PM_next = ~PM;
+									 hora_C_D_next = {PM_next,3'b001};
+									 hora_C_U_next = 4'b0010;
 								 end
 								else	begin
 									if (hora_C_U_next == 4'b0000)begin
